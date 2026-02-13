@@ -1,4 +1,4 @@
-package com.tech.discogschallenge
+package com.tech.discogschallenge.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.tech.discogschallenge.ui.theme.DiscogsChallengeTheme
+import com.tech.design_system.theme.DiscogsChallengeTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

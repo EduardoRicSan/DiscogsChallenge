@@ -1,4 +1,4 @@
-package com.tech.discogschallenge.ui.theme
+package com.tech.design_system.theme
 
 import androidx.compose.ui.graphics.Color
 

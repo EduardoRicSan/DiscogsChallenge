@@ -48,7 +48,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.process)
     implementation(libs.androidx.activity.compose)
-
     // Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
@@ -56,44 +55,37 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
-
     // Orbit MVI
     implementation(libs.orbit.core)
     implementation(libs.orbit.viewmodel)
     implementation(libs.orbit.mvi)
-
     // Navigation & Material Icons
     implementation(libs.navigation.compose)
     implementation(libs.material.icons.extended)
-
     // Coil (imagenes)
     implementation(libs.coil.compose)
     implementation(libs.coil3.svg)
     implementation(libs.coil.network.okhttp)
-
     // Serialization
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.ktor.client.serialization)
-
     // Hilt
     implementation(libs.dagger.hilt)
     ksp(libs.dagger.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
     ksp(libs.androidx.hilt.compiler)
-
     // Tests
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
     testImplementation(libs.ktor.client.mock)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-
     // Modules
     implementation(project(":core"))
     implementation(project(":design_system"))
