@@ -1,8 +1,5 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.android.application)
-   // alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.dagger.hilt)
@@ -31,7 +28,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -45,19 +42,14 @@ android {
     }
 }
 
-
 dependencies {
-    // ------------------------------------------------------
     // Core Android + Lifecycles
-    // ------------------------------------------------------
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.process)
     implementation(libs.androidx.activity.compose)
 
-    // ------------------------------------------------------
     // Compose
-    // ------------------------------------------------------
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
@@ -67,58 +59,42 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    // ------------------------------------------------------
     // Orbit MVI
-    // ------------------------------------------------------
     implementation(libs.orbit.core)
     implementation(libs.orbit.viewmodel)
     implementation(libs.orbit.mvi)
 
-    // ------------------------------------------------------
     // Navigation & Material Icons
-    // ------------------------------------------------------
     implementation(libs.navigation.compose)
     implementation(libs.material.icons.extended)
 
-    // ------------------------------------------------------
     // Coil (imagenes)
-    // ------------------------------------------------------
     implementation(libs.coil.compose)
     implementation(libs.coil3.svg)
     implementation(libs.coil.network.okhttp)
 
-    // ------------------------------------------------------
     // Serialization
-    // ------------------------------------------------------
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.ktor.client.serialization)
 
-    // ------------------------------------------------------
     // Hilt
-    // ------------------------------------------------------
     implementation(libs.dagger.hilt)
     ksp(libs.dagger.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
     ksp(libs.androidx.hilt.compiler)
 
-
-    // ------------------------------------------------------
     // Tests
-    // ------------------------------------------------------
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
     testImplementation(libs.ktor.client.mock)
-    testImplementation(libs.androidx.room.testing)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
-    // ------------------------------------------------------
     // Modules
-    // ------------------------------------------------------
     implementation(project(":core"))
     implementation(project(":design_system"))
     implementation(project(":domain"))

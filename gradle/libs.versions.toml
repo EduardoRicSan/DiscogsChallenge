@@ -39,7 +39,7 @@ okHttp3Version = "5.3.2"
 material3Version = "1.5.0-alpha14"
 ksp = "2.3.3"
 ktlint = "14.0.1"
-detekt = "1.23.6"
+detekt = "1.23.8"
 jacoco = "0.8.11"
 android-quality = "unspecified"
 
@@ -162,6 +162,8 @@ material = { group = "com.google.android.material", name = "material", version.r
 # -----------------------------
 gradle = "com.android.tools.build:gradle:9.0.0"
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint" }
+detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 
 
 [plugins]

@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>NewLineAtEndOfFile:ExampleUnitTest.kt$com.tech.domain.ExampleUnitTest.kt</ID>
+  </CurrentIssues>
+</SmellBaseline>

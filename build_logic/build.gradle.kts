@@ -14,8 +14,14 @@ gradlePlugin {
 repositories {
     google()
     mavenCentral()
+    gradlePluginPortal()
 }
 
 tasks.withType(org.gradle.api.tasks.Copy::class.java) {
     duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.EXCLUDE
+}
+
+dependencies {
+    implementation(libs.ktlint.gradle)
+    implementation(libs.detekt.gradle)
 }
