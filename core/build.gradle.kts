@@ -32,24 +32,24 @@ android {
 }
 
 dependencies {
-    // ------------------- Core Android ----------------------
+    // Core Android
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    // ------------------- DataStore ------------------------
+    // DataStore
     implementation(libs.datastore.preferences)
-    // ------------------- Serialization ---------------------
+    // Serialization
     implementation(libs.kotlinx.serialization.json)
-    // ------------------- Hilt -----------------------------
+    // Hilt
     implementation(libs.dagger.hilt)
     ksp(libs.dagger.hilt.compiler)
-    // ------------------- Ktor -----------------------------
+    // Ktor
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.serialization.json)
-    // ------------------- Hitl Navigation ------------------
+    // Hitl Navigation
     implementation(libs.hilt.navigation.compose)
-    // ------------------- Tests ----------------------------
+    // Tests
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
