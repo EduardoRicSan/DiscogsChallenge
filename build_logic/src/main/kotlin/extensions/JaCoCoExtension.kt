@@ -6,69 +6,61 @@ import org.gradle.kotlin.dsl.register
 import org.gradle.testing.jacoco.tasks.JacocoReport
 
 // JaCoCo Multi-module configuration
- internal fun Project.configureJacocoMultiModule(subProjects: List<Project>) {
-    if (this != rootProject) return
+internal fun Project.configureJacoco() {
 
-    rootProject.tasks.findByName(QualityConstants.Tasks.JACOCO_MERGE_REPORT)
-        ?: rootProject.tasks.register<JacocoReport>(
-            QualityConstants.Tasks.JACOCO_MERGE_REPORT
-        ) {
+    tasks.register<JacocoReport>(QualityConstants.Tasks.JACOCO_REPORT) {
 
-            // Run all test tasks first
-            dependsOn(
-                subProjects.flatMap {
-                    it.tasks.matching { t ->
-                        t.name.contains(QualityConstants.Jacoco.TEST_TASK_KEYWORD)
-                    }
-                }
+        val testTask =
+            tasks.named(QualityConstants.Jacoco.TEST_DEBUG_UNIT)
+
+        val compileTask =
+            tasks.named(QualityConstants.Jacoco.COMPILE_DEBUG_KOTLIN)
+
+        // Explicit task graph (Gradle 9 requirement)
+        dependsOn(testTask)
+        dependsOn(compileTask)
+
+        // ---------- EXECUTION DATA ----------
+        executionData.from(
+            layout.buildDirectory.file(
+                QualityConstants.Jacoco.EXEC_FILE_1
+            ),
+            layout.buildDirectory.file(
+                QualityConstants.Jacoco.EXEC_FILE_2
             )
+        )
 
-            // Collect execution data
-            val execFiles = subProjects.flatMap {
-                it.fileTree(it.buildDir.resolve(QualityConstants.Jacoco.EXEC_FOLDER)) {
-                    include(QualityConstants.Jacoco.EXEC_PATTERN)
-                }.files
-            }
+        // ---------- CLASS FILES ----------
+        classDirectories.from(
+            files(
+                // Kotlin compiled classes
+                layout.buildDirectory.dir(
+                    QualityConstants.Jacoco.KOTLIN_CLASSES_DEBUG
+                ),
 
-            executionData.setFrom(execFiles)
-
-            // Compiled classes
-            val classDirs = subProjects.flatMap {
-                it.fileTree(
-                    it.buildDir.resolve(QualityConstants.Jacoco.KOTLIN_CLASSES_DEBUG)
-                ) {
-                    exclude(QualityConstants.Jacoco.EXCLUDES)
-                }.files
-            }
-
-            classDirectories.setFrom(classDirs)
-
-            // Sources
-            val srcDirs = subProjects.flatMap { project ->
-                QualityConstants.Jacoco.SOURCE_DIRS.map {
-                    project.file(it)
-                }
-            }
-
-            sourceDirectories.setFrom(srcDirs)
-
-            // Reports
-            reports {
-                xml.required.set(true)
-                xml.outputLocation.set(
-                    file("$buildDir/${QualityConstants.Jacoco.REPORT_XML}")
+                // Java / AGP compiled classes (AGP 8+)
+                layout.buildDirectory.dir(
+                    QualityConstants.Jacoco.JAVA_CLASSES_DEBUG
                 )
-
-                html.required.set(true)
-                html.outputLocation.set(
-                    file("$buildDir/${QualityConstants.Jacoco.REPORT_HTML}")
-                )
+            ).asFileTree.matching {
+                include(QualityConstants.Jacoco.CLASS_PATTERN)
+                exclude(QualityConstants.Jacoco.EXCLUDES)
             }
+        )
 
-            // Required for Gradle 9+
-            jacocoClasspath = files(
-                configurations.getByName(QualityConstants.Jacoco.JACOCO_AGENT),
-                configurations.getByName(QualityConstants.Jacoco.JACOCO_ANT)
-            )
+
+        // ---------- SOURCE FILES ----------
+        sourceDirectories.from(
+            QualityConstants.Jacoco.SOURCE_DIRS.map {
+                layout.projectDirectory.dir(it)
+            }
+        )
+
+        // ---------- REPORTS ----------
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
         }
+    }
 }
+

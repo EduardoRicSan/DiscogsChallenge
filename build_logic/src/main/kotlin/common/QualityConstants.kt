@@ -6,14 +6,16 @@ internal object QualityConstants {
         const val KTLINT = "org.jlleitschuh.gradle.ktlint"
         const val DETEKT = "io.gitlab.arturbosch.detekt"
         const val JACOCO = "jacoco"
+
+        const val ANDROID_APPLICATION = "com.android.application"
+        const val ANDROID_LIBRARY = "com.android.library"
     }
 
     object Tasks {
         const val CHECK = "check"
         const val DETEKT = "detekt"
         const val KTLINT_CHECK = "ktlintCheck"
-        const val JACOCO_MERGE_REPORT = "jacocoMergeReport"
-        const val PRE_PR_CHECK = "prePRCheck"
+        const val JACOCO_REPORT = "jacocoDebugReport"
     }
 
     object Detekt {
@@ -23,37 +25,48 @@ internal object QualityConstants {
     }
 
     object Jacoco {
-        const val EXEC_FOLDER = "jacoco"
-        const val EXEC_PATTERN = "**/*.exec"
-        const val TEST_TASK_KEYWORD = "test"
-        const val JACOCO_AGENT = "jacocoAgent"
-        const val JACOCO_ANT = "jacocoAnt"
 
-        const val KOTLIN_CLASSES_DEBUG = "tmp/kotlin-classes/debug"
+        // ---- Tasks ----
+        const val TEST_DEBUG_UNIT = "testDebugUnitTest"
+        const val COMPILE_DEBUG_KOTLIN = "compileDebugKotlin"
+
+        // ---- Exec files (AGP paths) ----
+        const val EXEC_FILE_1 =
+            "jacoco/testDebugUnitTest.exec"
+
+        const val EXEC_FILE_2 =
+            "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec"
+
+        // ---- Classes ----
+        const val KOTLIN_CLASSES_DEBUG =
+            "tmp/kotlin-classes/debug"
+
+        const val JAVA_CLASSES_DEBUG =
+            "intermediates/javac/debug/classes"
+        const val CLASS_PATTERN = "**/*.class"
 
         val EXCLUDES = listOf(
             "**/R.class",
+            "**/R$*.class",
             "**/BuildConfig.*",
-            "**/Manifest*"
+            "**/Manifest*.*",
+            "**/*Test*.*",
+            "**/*\$Companion.class",
+            "**/*\$Lambda$*.*",
+            "**/*\$inlined$*.*",
+            "**/*Preview*.*",
+            "**/di/**",
+            "**/hilt_aggregated_deps/**",
+            "**/*Hilt*.*",
+            "**/*_Factory.*",
+            "**/*_MembersInjector.*"
         )
 
+        // ---- Sources ----
         val SOURCE_DIRS = listOf(
             "src/main/java",
             "src/main/kotlin"
         )
-
-        const val REPORT_XML =
-            "reports/jacoco/jacocoMergeReport/jacoco.xml"
-
-        const val REPORT_HTML =
-            "reports/jacoco/jacocoMergeReport/html"
-    }
-
-    object TaskMetadata {
-        const val VERIFICATION_GROUP = "verification"
-
-        const val PRE_PR_DESCRIPTION =
-            "Runs ktlint, detekt, tests and merged JaCoCo coverage before opening a PR"
     }
 
     object QualityModule {

@@ -25,12 +25,20 @@ jobs:
       - name: Grant execute permissions for gradlew
         run: chmod +x ./gradlew
 
-      - name: Run Pre-PR Checks
-        run: ./gradlew prePRCheck --stacktrace
+      # ✅ Runs:
+      # ktlint
+      # detekt
+      # tests
+      # jacocoDebugReport (per module)
+      - name: Run Quality Checks
+        run: ./gradlew check --stacktrace
 
-      - name: Publish Jacoco HTML Coverage Artifact
+      # ✅ Upload ALL module coverage reports
+      - name: Publish Jacoco HTML Coverage Artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-coverage
-          path: build/reports/jacoco/jacocoMergeReport/html/
+          path: |
+            **/build/reports/jacoco/jacocoDebugReport/html/**
+
