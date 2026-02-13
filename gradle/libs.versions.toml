@@ -37,12 +37,15 @@ lifecycleProcess = "2.10.0"
 uiTextGoogleFonts = "1.10.3"
 okHttp3Version = "5.3.2"
 material3Version = "1.5.0-alpha14"
-ksp = "2.3.3" # "2.2.21-2.0.4"
-
+ksp = "2.3.3"
+ktlint = "14.0.1"
+detekt = "1.23.6"
+jacoco = "0.8.11"
+android-quality = "unspecified"
 
 [libraries]
 
-# -----------------------------
+# ----------------------------
 # ANDROIDX CORE / APP
 # -----------------------------
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -51,7 +54,7 @@ datastore-preferences = { group = "androidx.datastore", name = "datastore-prefer
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycleProcess" }
 
-# -----------------------------
+# ----------------------------
 # COMPOSE
 # -----------------------------
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
@@ -64,19 +67,19 @@ material-icons-extended = { group = "androidx.compose.material", name = "materia
 androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 
-# -----------------------------
+# ----------------------------
 # COMPOSE TEST
 # -----------------------------
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 
 
-# -----------------------------
+# ----------------------------
 # NAVIGATION
 # -----------------------------
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationComposeVersion" }
 
-# -----------------------------
+# ----------------------------
 # HILT
 # -----------------------------
 dagger-hilt = { module = "com.google.dagger:hilt-android", version.ref = "hiltVersion" }
@@ -86,7 +89,7 @@ androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref =
 google-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompilerVersion" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationComposeVersion" }
 
-# -----------------------------
+# ----------------------------
 # ROOM
 # -----------------------------
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomKtxVersion" }
@@ -94,7 +97,7 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtxVersion" }
 room-paging = { module = "androidx.room:room-paging", version.ref = "roomKtxVersion" }
 androidx-room-testing = { group = "androidx.room", name = "room-testing" }
 
-# -----------------------------
+# ----------------------------
 # KTOR / NETWORKING
 # -----------------------------
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
@@ -105,20 +108,20 @@ ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "k
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-mock = { group = "io.ktor", name = "ktor-client-mock", version.ref = "ktor" }
 
-# -----------------------------
+# ----------------------------
 # OKHTTP (para Coil)
 # -----------------------------
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okHttp3Version" }
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okHttp3Version" }
 
-# -----------------------------
+# ----------------------------
 # KOTLINX (Coroutines / Serialization)
 # -----------------------------
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
-# -----------------------------
+# ----------------------------
 # TESTING
 # -----------------------------
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -133,7 +136,7 @@ mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 
 
-# -----------------------------
+# ----------------------------
 # MVI
 # -----------------------------
 orbit-core = { group = "org.orbit-mvi", name = "orbit-core", version.ref = "orbit" }
@@ -141,7 +144,7 @@ orbit-viewmodel = { group = "org.orbit-mvi", name = "orbit-viewmodel", version.r
 orbit-mvi = { group = "org.orbit-mvi", name = "orbit-compose", version.ref = "orbit" }
 
 
-# -----------------------------
+# ----------------------------
 # MULTIMEDIA (COIL / LOTTIE)
 # -----------------------------
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilComposeVersion" }
@@ -149,12 +152,12 @@ coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version
 coil3-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coilComposeVersion" }
 
 
-# -----------------------------
+# ----------------------------
 # MATERIAL DESIGN
 # -----------------------------
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
-# -----------------------------
+# ----------------------------
 # GRADLE / KOTLIN PLUGINS
 # -----------------------------
 gradle = "com.android.tools.build:gradle:9.0.0"
@@ -172,6 +175,8 @@ ksp  = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltVersion" }
 # --- Kotlin Serialization ---
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-# --- Google services & Firebase ---
-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-gradle" }
-firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebase-perf-plugin" }
+# ---- KtLint ----
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+# --- Android Conventional Plugin ---
+android-quality = { id = "android.quality", version.ref = "android-quality" }
