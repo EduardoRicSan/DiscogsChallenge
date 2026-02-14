@@ -9,6 +9,10 @@ import io.ktor.http.HttpStatusCode
 import kotlinx.serialization.SerializationException
 import java.io.IOException
 
+/**
+ * Maps different network-related exceptions into a standardized [NetworkResult.Error],
+ * providing consistent error handling across the networking layer.
+ */
 internal fun Throwable.toNetworkError(): NetworkResult.Error {
     return when (this) {
 
