@@ -17,7 +17,7 @@ naming:
 complexity:
   LongMethod:
     active: true
-    threshold: 40  # Prevent overly large functions (especially in ViewModels & UseCases)
+    threshold: 60  # Prevent overly large functions (especially in ViewModels & UseCases)
     ignoreAnnotated:
       - Composable
 

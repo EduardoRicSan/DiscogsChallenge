@@ -4,19 +4,20 @@ import com.tech.data.BuildConfig
 
 internal object DiscogsApiConstants {
     const val DISCOGS_SEARCH_ENDPOINT = "/database/search"
-
+    const val DISCOGS_GET_ARTIST_INFO_ENDPOINT = "/artists/"
+    const val DISCOGS_GET_ARTIST_ALBUMS_ENDPOINT= "/releases"
 }
 
 internal object DiscogsApiQueryParameters {
     const val DISCOGS_API_KEY_PARAMETER = "Authorization"
     const val DISCOGS_API_KEY_PARAMETER_VALUE = "Discogs token ${BuildConfig.DISCOGS_API_KEY}"
+    // SEARCH PARAMETERS - VALUES
     const val DISCOGS_SEARCH_QUERY_PARAMETER = "q"
     const val DISCOGS_SEARCH_TYPE_PARAMETER = "type"
     const val DISCOGS_SEARCH_TYPE_VALUE = "artist"
     const val DISCOGS_SEARCH_PER_PAGE_PARAMETER = "per_page"
     const val DISCOGS_SEARCH_PER_PAGE_VALUE = 30
     const val DISCOGS_SEARCH_PAGE_PARAMETER = "page"
-
 }
 
 internal object RemoteDataModuleConstants {
