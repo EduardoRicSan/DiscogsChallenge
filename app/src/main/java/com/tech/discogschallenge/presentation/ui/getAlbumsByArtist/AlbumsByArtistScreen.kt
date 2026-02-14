@@ -7,12 +7,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tech.core.common.globalConstants.DiscogsGlobalConstants.ZERO_VALUE
 import com.tech.design_system.common.model.DiscogsSnackbarMessage
 import com.tech.discogschallenge.presentation.viewmodel.getAlbumsByArtist.AlbumsByArtistIntent
 import com.tech.discogschallenge.presentation.viewmodel.getAlbumsByArtist.AlbumsByArtistSideEffect
 import com.tech.discogschallenge.presentation.viewmodel.getAlbumsByArtist.AlbumsByArtistViewModel
-import com.tech.discogschallenge.presentation.viewmodel.getArtistInfo.ArtistInfoDetailViewModel
 
+// Screen responsible for displaying an artist's albums,
+// handling data loading, global UI events, and filter application.
 @Composable
 fun AlbumsByArtistScreen(
     artistId: Int,
@@ -21,25 +23,27 @@ fun AlbumsByArtistScreen(
     viewModel: AlbumsByArtistViewModel = hiltViewModel()
 ) {
 
+    // Collects UI state from ViewModel lifecycle-aware
     val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
 
-    // LOAD DATA
+    // Triggers initial albums loading when artistId changes
     LaunchedEffect(artistId) {
         viewModel.onIntent(
             AlbumsByArtistIntent.LoadAlbums(artistId)
         )
     }
 
-    // GLOBAL LOADER
+    // Controls global loading indicator from screen state
     LaunchedEffect(state.isLoading) {
         triggerLoader(state.isLoading)
     }
 
-    // SIDE EFFECTS
+    // Observes one-time side effects (errors, messages, etc.)
     LaunchedEffect(Unit) {
         viewModel.container.sideEffectFlow.collect { effect ->
             when (effect) {
 
+                // Displays error message using global snackbar
                 is AlbumsByArtistSideEffect.ShowError -> {
                     showTopSnackbar(
                         DiscogsSnackbarMessage(
@@ -51,7 +55,7 @@ fun AlbumsByArtistScreen(
         }
     }
 
-    // UI
+    // Applies filters and sorting locally for UI rendering
     val filteredAlbums by remember(
         state.albums,
         state.selectedYear,
@@ -70,11 +74,12 @@ fun AlbumsByArtistScreen(
                 .filter {
                     state.selectedLabel == null || it.label == state.selectedLabel
                 }
-                .sortedByDescending { it.year ?: 0 }
+                .sortedByDescending { it.year ?: ZERO_VALUE }
                 .toList()
         }
     }
 
+    // Extracts available years for filter chips
     val availableYears by remember(state.albums) {
         derivedStateOf {
             state.albums
@@ -84,6 +89,7 @@ fun AlbumsByArtistScreen(
         }
     }
 
+    // Extracts available labels for filter chips
     val availableLabels by remember(state.albums) {
         derivedStateOf {
             state.albums
@@ -92,6 +98,7 @@ fun AlbumsByArtistScreen(
         }
     }
 
+    // Main screen content
     AlbumsByArtistContent(
         state = state,
         albums = filteredAlbums,
@@ -100,4 +107,5 @@ fun AlbumsByArtistScreen(
         onIntent = viewModel::onIntent
     )
 }
+
 

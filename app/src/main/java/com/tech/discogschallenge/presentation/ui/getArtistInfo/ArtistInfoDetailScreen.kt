@@ -16,6 +16,10 @@ import com.tech.discogschallenge.presentation.viewmodel.getArtistInfo.ArtistDeta
 import com.tech.discogschallenge.presentation.viewmodel.getArtistInfo.ArtistDetailSideEffect
 import com.tech.discogschallenge.presentation.viewmodel.getArtistInfo.ArtistInfoDetailViewModel
 
+/**
+ * Screen responsible for displaying artist details,
+ * handling loading state, errors, and navigation side effects.
+ */
 @Composable
 fun ArtistInfoDetailScreen(
     viewModel: ArtistInfoDetailViewModel = hiltViewModel(),
@@ -27,25 +31,27 @@ fun ArtistInfoDetailScreen(
     val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
-    // Carga inicial del artista
+    // ---------- INITIAL DATA LOAD ----------
     LaunchedEffect(artistId) {
         viewModel.onIntent(ArtistDetailIntent.LoadArtist(artistId))
     }
 
-    // Loader global usando DiscogsAppScaffold
+    // ---------- GLOBAL LOADER ----------
     triggerLoader(state.isLoading)
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-        // Contenido principal
+        // ---------- MAIN CONTENT ----------
         state.artist?.let { artist ->
             ArtistDetailContent(
                 artist = artist,
-                onViewAlbumsClick = { viewModel.onIntent(ArtistDetailIntent.ViewAlbums) }
+                onViewAlbumsClick = {
+                    viewModel.onIntent(ArtistDetailIntent.ViewAlbums)
+                }
             )
         }
 
-        // Error centrado con snackbar del Design System
+        // ---------- ERROR HANDLING ----------
         state.errorMessage?.let { error ->
             showTopSnackbar(
                 DiscogsSnackbarMessage(
@@ -56,13 +62,17 @@ fun ArtistInfoDetailScreen(
         }
     }
 
-    // SideEffects: navegación y errores
+    // ---------- SIDE EFFECTS ----------
     LaunchedEffect(Unit) {
         viewModel.container.sideEffectFlow.collect { effect ->
             when (effect) {
+
+                // Navigation event
                 is ArtistDetailSideEffect.NavigateToAlbums -> {
                     onNavigateToAlbums(effect.artistId)
                 }
+
+                // Fallback error feedback
                 is ArtistDetailSideEffect.ShowError -> {
                     Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
                 }
@@ -70,6 +80,3 @@ fun ArtistInfoDetailScreen(
         }
     }
 }
-
-
-

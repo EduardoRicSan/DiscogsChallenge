@@ -9,7 +9,7 @@ import com.tech.core.route.SearchArtist
 import com.tech.discogschallenge.R
 import com.tech.design_system.common.model.DiscogsUiText
 
-// Converts a BXMasAppDestination to a UiText for the top bar title
+// Converts a DiscogsAppDestination to a DiscogsUiText for the top bar title
 fun DiscogsAppDestination.toTopBarTitle(): DiscogsUiText =
     when (this) {
         is SearchArtist ->  DiscogsUiText.StringRes(R.string.title_search_artist)

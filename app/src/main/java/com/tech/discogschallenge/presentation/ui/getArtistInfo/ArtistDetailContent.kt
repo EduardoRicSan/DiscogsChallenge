@@ -24,7 +24,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import com.tech.design_system.common.constants.DSConstants.MAX_LINE_AT_2
+import com.tech.discogschallenge.R
 import com.tech.design_system.common.model.DiscogsImageSource
 import com.tech.design_system.components.button.DiscogsPrimaryButton
 import com.tech.design_system.components.card.DiscogsCard
@@ -38,6 +41,10 @@ import com.tech.design_system.tokens.sizes
 import com.tech.design_system.tokens.spacing
 import com.tech.domain.model.getArtistInfo.ArtistFull
 
+/**
+ * Displays artist detail information including header image,
+ * biography, navigation action, and band members list.
+ */
 @Composable
 fun ArtistDetailContent(
     artist: ArtistFull,
@@ -47,8 +54,11 @@ fun ArtistDetailContent(
         modifier = Modifier.fillMaxSize()
     ) {
 
+        // ---------- HEADER IMAGE ----------
         item {
             Box {
+
+                // Artist hero image
                 val imageUrl = artist.images.firstOrNull()?.resourceUrl ?: artist.thumb
                 DiscogsImage(
                     source = DiscogsImageSource.Url(imageUrl.orEmpty()),
@@ -59,6 +69,7 @@ fun ArtistDetailContent(
                     contentScale = ContentScale.Crop
                 )
 
+                // Gradient overlay to improve title readability
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -70,6 +81,7 @@ fun ArtistDetailContent(
                         )
                 )
 
+                // Artist name displayed over image
                 DiscogsHeadlineText(
                     text = artist.name,
                     color = Color.White,
@@ -80,17 +92,24 @@ fun ArtistDetailContent(
             }
         }
 
+        // ---------- ARTIST INFO + ACTION ----------
         item {
             Column(modifier = Modifier.padding(MaterialTheme.spacing.lg)) {
 
+                // Artist description / profile
                 artist.title?.let {
-                    DiscogsLabelText(text = it, overflow = TextOverflow.Visible, maxLines = 6)
+                    DiscogsLabelText(
+                        text = it,
+                        overflow = TextOverflow.Visible,
+                        maxLines = 6
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
 
+                // Navigation button to albums screen
                 DiscogsPrimaryButton(
-                    text = "View Albums",
+                    text = stringResource(R.string.title_action_view_albums),
                     onClick = onViewAlbumsClick,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -102,9 +121,11 @@ fun ArtistDetailContent(
         }
 
         if (artist.members.isNotEmpty()) {
+
+            // Section title
             item {
                 DiscogsOverlineText(
-                    text = "Band Members",
+                    text = stringResource(R.string.title_band_members),
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(
                         horizontal = MaterialTheme.spacing.lg,
@@ -113,6 +134,7 @@ fun ArtistDetailContent(
                 )
             }
 
+            // Horizontal members list
             item {
                 LazyRow(
                     contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.lg),
@@ -124,6 +146,8 @@ fun ArtistDetailContent(
                                 .width(MaterialTheme.sizes.imageMedium)
                                 .height(MaterialTheme.sizes.imageMedium)
                         ) {
+
+                            // Member item content
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Center,
@@ -135,10 +159,12 @@ fun ArtistDetailContent(
                                     Icons.Default.Person,
                                     contentDescription = null
                                 )
+
                                 Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
+
                                 DiscogsBodyText(
                                     text = member.name.orEmpty(),
-                                    maxLines = 2,
+                                    maxLines = MAX_LINE_AT_2,
                                 )
                             }
                         }

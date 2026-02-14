@@ -7,4 +7,9 @@
     <string name="message_alert_dialog_exit">Are you sure you want to exit the app?</string>
     <string name="confirm_alert_dialog_exit">Yes</string>
     <string name="dismiss_alert_dialog_exit">Cancel</string>
+    <string name="title_action_view_albums">View Albums</string>
+    <string name="title_band_members">Band Members</string>
+    <string name="title_filter_by_label">Filter by Label</string>
+    <string name="title_filter_by_year">Filter by Year</string>
+    <string name="title_no_artist_found">No artists found</string>
 </resources>

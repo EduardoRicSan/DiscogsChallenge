@@ -10,10 +10,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 
+/**
+ * Implementation of [DiscogsRemoteDataSource] responsible for
+ * executing API requests using [DiscogsApiService].
+ *
+ * All network calls are wrapped with safeApiCall to provide
+ * standardized error handling and emit NetworkResult states.
+ */
 class DiscogsRemoteDataSourceImpl(
     private val apiService: DiscogsApiService
 ) : DiscogsRemoteDataSource {
 
+    /** Performs artist search request with pagination support. */
     override suspend fun searchArtist(
         query: String,
         page: Int
@@ -21,6 +29,7 @@ class DiscogsRemoteDataSourceImpl(
         safeApiCall { apiService.searchArtist(query, page) }
             .flowOn(Dispatchers.IO)
 
+    /** Fetches detailed information for a specific artist. */
     override suspend fun getArtistInfo(
         artistId: Int
     ): Flow<NetworkResult<GetArtistInfoResponseDTO>> =
@@ -28,6 +37,7 @@ class DiscogsRemoteDataSourceImpl(
             apiService.getArtistInfo(artistId)
         }.flowOn(Dispatchers.IO)
 
+    /** Fetches albums/releases for a given artist with pagination. */
     override suspend fun getAlbumsByArtist(
         artistId: Int,
         page: Int

@@ -33,17 +33,26 @@ import com.tech.discogschallenge.presentation.viewmodel.DiscogsMainViewModel
 import com.tech.discogschallenge.presentation.viewmodel.MainIntent
 import com.tech.discogschallenge.presentation.viewmodel.MainSideEffect
 
+// Root navigation host that manages app navigation, global side effects,
+// top bar behavior, and shared UI scaffolding across screens.
 @Composable
 fun DiscogsNavHost(
     modifier: Modifier = Modifier,
     viewModel: DiscogsMainViewModel = hiltViewModel()
 ) {
+
+    // Navigation controller for Compose destinations
     val navController = rememberNavController()
+
+    // Collects main UI state from ViewModel lifecycle-aware
     val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
 
+    // Controls exit confirmation dialog visibility
     val showExitDialog = remember { mutableStateOf(false) }
 
     val context = LocalContext.current
+
+    // Observes one-time side effects from ViewModel
     LaunchedEffect(Unit) {
         viewModel.container.sideEffectFlow.collect { effect ->
             when (effect) {
@@ -58,17 +67,22 @@ fun DiscogsNavHost(
         }
     }
 
+    // Main app scaffold with shared top bar
     DiscogsAppScaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
             DiscogsTopBar(
                 titleText = state.topBarTitle.asString(),
                 currentRoute = state.currentRoute,
+
+                // Handles back navigation between screens
                 onBackClick = {
                     if (state.currentRoute !is SearchArtist) {
                         navController.popBackStack()
                     }
                 },
+
+                // Long press on root triggers exit flow
                 onBackLongPress = {
                     if (state.currentRoute is SearchArtist) {
                         viewModel.onIntent(MainIntent.BackLongPressed)
@@ -77,35 +91,42 @@ fun DiscogsNavHost(
             )
         },
     ) { paddingValues, showTopSnackbar, triggerLoader ->
+
+        // Navigation graph definition
         NavHost(
             navController = navController,
             startDestination = SearchArtist,
             modifier = Modifier.padding(paddingValues)
         ) {
-            // SEARCH ARTIST
+
+            // SEARCH ARTIST SCREEN
             composable<SearchArtist> {
                 LaunchedEffect(Unit) {
                     viewModel.onIntent(
                         MainIntent.RouteChanged(SearchArtist)
                     )
                 }
+
                 SearchArtistScreen(
                     showTopSnackbar = showTopSnackbar,
                     onArtistItemClick = { artistId ->
                         navController.navigate(ArtistInfoDetail(artistId))
-
                     }
                 )
             }
 
-            // ARTIST INFO DETAIL
+            // ARTIST DETAIL SCREEN
             composable<ArtistInfoDetail> { backStackEntry ->
                 val route = backStackEntry.toRoute<ArtistInfoDetail>()
+
                 LaunchedEffect(Unit) {
                     viewModel.onIntent(
-                        MainIntent.RouteChanged(ArtistInfoDetail(route.artistId))
+                        MainIntent.RouteChanged(
+                            ArtistInfoDetail(route.artistId)
+                        )
                     )
                 }
+
                 ArtistInfoDetailScreen(
                     triggerLoader = triggerLoader,
                     showTopSnackbar = showTopSnackbar,
@@ -116,14 +137,18 @@ fun DiscogsNavHost(
                 )
             }
 
-            // ALBUMS BY ARTIST
+            // ALBUMS BY ARTIST SCREEN
             composable<AlbumsByArtist> { backStackEntry ->
                 val route = backStackEntry.toRoute<AlbumsByArtist>()
+
                 LaunchedEffect(Unit) {
                     viewModel.onIntent(
-                        MainIntent.RouteChanged(AlbumsByArtist(route.artistId))
+                        MainIntent.RouteChanged(
+                            AlbumsByArtist(route.artistId)
+                        )
                     )
                 }
+
                 AlbumsByArtistScreen(
                     triggerLoader = triggerLoader,
                     showTopSnackbar = showTopSnackbar,
@@ -132,6 +157,8 @@ fun DiscogsNavHost(
             }
         }
     }
+
+    // Global exit confirmation dialog
     DiscogsAlertDialog(
         dialogMessage = DiscogsDialogMessage(
             title = stringResource(R.string.title_alert_dialog_exit),
@@ -142,5 +169,4 @@ fun DiscogsNavHost(
         ),
         isVisible = showExitDialog
     )
-
 }

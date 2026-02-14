@@ -1,8 +1,9 @@
 package com.tech.discogschallenge.presentation.viewmodel.getAlbumsByArtist
 
 import androidx.lifecycle.ViewModel
+import com.tech.core.common.globalConstants.DiscogsGlobalConstants.ZERO_VALUE
 import com.tech.core.network.NetworkResult
-import com.tech.domain.useCase.GetAlbumsByArtistUseCase
+import com.tech.domain.useCase.getAlbumsByArtist.GetAlbumsByArtistUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
@@ -21,7 +22,6 @@ class AlbumsByArtistViewModel @Inject constructor(
 
     fun onIntent(intent: AlbumsByArtistIntent) = intent {
         when (intent) {
-
             is AlbumsByArtistIntent.LoadAlbums -> {
                 loadAlbums(intent.artistId)
             }
@@ -45,7 +45,6 @@ class AlbumsByArtistViewModel @Inject constructor(
     }
 
     private fun loadAlbums(artistId: Int) = intent {
-
         reduce {
             state.copy(
                 artistId = artistId,
@@ -53,40 +52,32 @@ class AlbumsByArtistViewModel @Inject constructor(
                 error = null
             )
         }
-
         getAlbumsByArtistUseCase(artistId, page = 1)
             .collect { result ->
-
                 when (result) {
-
                     is NetworkResult.Loading -> {
                         reduce { state.copy(isLoading = true) }
                     }
 
                     is NetworkResult.Error -> {
-
                         reduce {
                             state.copy(
                                 isLoading = false,
                                 error = result.message
                             )
                         }
-
-                        // ⭐ SIDE EFFECT → Snackbar
                         postSideEffect(
                             AlbumsByArtistSideEffect.ShowError(
-                                result.message ?: "Unknown error"
+                                result.message
                             )
                         )
                     }
 
                     is NetworkResult.Success -> {
-
                         val sorted =
                             result.data
-                                ?.sortedByDescending { it.year ?: 0 }
+                                ?.sortedByDescending { it.year ?: ZERO_VALUE }
                                 .orEmpty()
-
                         reduce {
                             state.copy(
                                 albums = sorted,
@@ -98,5 +89,3 @@ class AlbumsByArtistViewModel @Inject constructor(
             }
     }
 }
-
-

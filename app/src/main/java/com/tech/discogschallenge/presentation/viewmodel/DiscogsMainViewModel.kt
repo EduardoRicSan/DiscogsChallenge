@@ -24,20 +24,16 @@ sealed interface MainSideEffect {
     data class ShowMessage(
         val message: String
     ) : MainSideEffect
+
     data object ShowExitDialog : MainSideEffect
     data object ExitApp : MainSideEffect
 }
 
 class DiscogsMainViewModel : ViewModel(),
     ContainerHost<MainState, MainSideEffect> {
-
-    override val container = container<MainState, MainSideEffect>(
-        MainState()
-    )
-
+    override val container = container<MainState, MainSideEffect>(MainState())
     fun onIntent(intent: MainIntent) = intent {
         when (intent) {
-
             is MainIntent.RouteChanged -> {
                 val safeRoute = intent.route ?: SearchArtist
                 reduce {
