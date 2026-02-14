@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DiscogsArtistResponseDTO(
-    @SerialName("pagination") val pagination: DiscogsPaginationDTO?,
+    @SerialName("pagination") val pagination: DiscogsPaginationDTO? = null,
     @SerialName("results") val results: List<ResultsDTO> = listOf(),
 )
