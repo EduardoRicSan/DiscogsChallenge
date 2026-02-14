@@ -9,6 +9,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.tech.design_system.tokens.DiscogsElevation
 import com.tech.design_system.tokens.DiscogsRadius
@@ -20,21 +21,51 @@ import com.tech.design_system.tokens.LocalSize
 import com.tech.design_system.tokens.LocalSpacing
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+
+    primary = SpotifyGreen,
+    onPrimary = SpotifyOnPrimary,
+
+    secondary = SpotifyGreenLight,
+    tertiary = SpotifyGreenDark,
+
+    background = SpotifyBlack,
+    onBackground = SpotifyOnSurface,
+
+    surface = SpotifySurface,
+    onSurface = SpotifyOnSurface,
+
+    surfaceVariant = SpotifySurfaceVariant,
+    onSurfaceVariant = SpotifyOnSurfaceVariant,
+
+    outline = Color(0xFF3E3E3E)
 )
 
+
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+
+    primary = SpotifyGreen,
+    onPrimary = Color.White,
+
+    secondary = SpotifyGreenDark,
+    tertiary = SpotifyGreenLight,
+
+    background = SpotifyLightBackground,
+    onBackground = SpotifyLightOnSurface,
+
+    surface = SpotifyLightSurface,
+    onSurface = SpotifyLightOnSurface,
+
+    surfaceVariant = Color(0xFFEAEAEA),
+    onSurfaceVariant = Color(0xFF555555),
+
+    outline = Color(0xFFD0D0D0)
 )
+
 
 @Composable
 fun DiscogsChallengeTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
 
