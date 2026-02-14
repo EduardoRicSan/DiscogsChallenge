@@ -41,7 +41,8 @@ import com.tech.domain.model.search.SearchArtistResult
 fun SearchArtistScreen(
     modifier: Modifier = Modifier,
     viewModel: SearchArtistViewModel = hiltViewModel(),
-    showTopSnackbar: (DiscogsSnackbarMessage) -> Unit
+    showTopSnackbar: (DiscogsSnackbarMessage) -> Unit,
+    onArtistItemClick: (Int) -> Unit,
 ) {
     val state by viewModel.container.stateFlow.collectAsState()
     val sideEffectFlow = viewModel.container.sideEffectFlow
@@ -78,7 +79,8 @@ fun SearchArtistScreen(
                 else -> {
                     ArtistList(
                         state = state,
-                        onLoadNextPage = { viewModel.onIntent(SearchArtistIntent.LoadNextPage) }
+                        onLoadNextPage = { viewModel.onIntent(SearchArtistIntent.LoadNextPage) },
+                        onArtistItemClick = onArtistItemClick
                     )
                 }
             }
@@ -111,7 +113,8 @@ private fun EmptyPlaceholder() {
 @Composable
 private fun ArtistList(
     state: SearchArtistState,
-    onLoadNextPage: () -> Unit
+    onLoadNextPage: () -> Unit,
+    onArtistItemClick: (Int) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -119,7 +122,7 @@ private fun ArtistList(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
     ) {
         items(state.artists) { artist ->
-            ArtistItem(artist)
+            ArtistItem(artist, onArtistItemClick)
         }
 
         if (state.isLoading && state.artists.isNotEmpty()) {
@@ -144,9 +147,12 @@ private fun ArtistList(
 }
 
 @Composable
-private fun ArtistItem(artist: SearchArtistResult) {
+private fun ArtistItem(
+    artist: SearchArtistResult,
+    onArtistItemClick: (Int) -> Unit,
+    ) {
     DiscogsCard(
-        onClick = { /* navegar a detalle */ },
+        onClick = { onArtistItemClick(artist.id) },
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {

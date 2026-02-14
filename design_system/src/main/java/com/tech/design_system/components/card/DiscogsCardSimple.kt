@@ -2,6 +2,7 @@ package com.tech.design_system.components.card
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -40,6 +41,7 @@ import com.tech.design_system.tokens.spacing
 fun DiscogsCard(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
+    contentPadding: PaddingValues = PaddingValues(MaterialTheme.spacing.md),
     content: @Composable () -> Unit
 ) {
     Card(
@@ -56,12 +58,13 @@ fun DiscogsCard(
         )
     ) {
         Box(
-            modifier = Modifier.padding(MaterialTheme.spacing.md)
+            modifier = Modifier.padding(contentPadding)
         ) {
             content()
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

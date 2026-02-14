@@ -7,6 +7,7 @@ import com.tech.data.remote.dto.getArtistInfo.MembersDTO
 import com.tech.data.remote.dto.search.ResultsDTO
 import com.tech.domain.model.getAlbumsByArtist.Album
 import com.tech.domain.model.getArtistInfo.Artist
+import com.tech.domain.model.getArtistInfo.ArtistFull
 import com.tech.domain.model.getArtistInfo.Image
 import com.tech.domain.model.getArtistInfo.Member
 import com.tech.domain.model.mapper.ImageServerDummyUrl.SERVER_OK_BASE_URL
@@ -76,3 +77,13 @@ fun ReleasesDTO.toDomain(): Album =
         label = label,
         artist = artist,
     )
+
+fun Artist.toFullDomain(): ArtistFull = ArtistFull(
+    id = id,
+    name = name,
+    title = profile,
+    thumb = images.firstOrNull()?.uri ?: images.firstOrNull()?.resourceUrl,
+    images = images,
+    members = members,
+    resourceUrl = resourceUrl
+)

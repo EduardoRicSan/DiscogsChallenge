@@ -15,14 +15,19 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.tech.discogschallenge.R
 import com.tech.core.common.extension.killApp
+import com.tech.core.route.AlbumsByArtist
+import com.tech.core.route.ArtistInfoDetail
 import com.tech.core.route.SearchArtist
 import com.tech.design_system.common.model.DiscogsDialogMessage
 import com.tech.design_system.common.model.asString
 import com.tech.design_system.components.dialog.DiscogsAlertDialog
 import com.tech.design_system.components.scafold.DiscogsAppScaffold
 import com.tech.design_system.components.topBar.DiscogsTopBar
+import com.tech.discogschallenge.presentation.ui.getAlbumsByArtist.AlbumsByArtistScreen
+import com.tech.discogschallenge.presentation.ui.getArtistInfo.ArtistInfoDetailScreen
 import com.tech.discogschallenge.presentation.ui.search.SearchArtistScreen
 import com.tech.discogschallenge.presentation.viewmodel.DiscogsMainViewModel
 import com.tech.discogschallenge.presentation.viewmodel.MainIntent
@@ -77,6 +82,7 @@ fun DiscogsNavHost(
             startDestination = SearchArtist,
             modifier = Modifier.padding(paddingValues)
         ) {
+            // SEARCH ARTIST
             composable<SearchArtist> {
                 LaunchedEffect(Unit) {
                     viewModel.onIntent(
@@ -84,10 +90,46 @@ fun DiscogsNavHost(
                     )
                 }
                 SearchArtistScreen(
-                    showTopSnackbar = showTopSnackbar
+                    showTopSnackbar = showTopSnackbar,
+                    onArtistItemClick = { artistId ->
+                        navController.navigate(ArtistInfoDetail(artistId))
+
+                    }
                 )
             }
 
+            // ARTIST INFO DETAIL
+            composable<ArtistInfoDetail> { backStackEntry ->
+                val route = backStackEntry.toRoute<ArtistInfoDetail>()
+                LaunchedEffect(Unit) {
+                    viewModel.onIntent(
+                        MainIntent.RouteChanged(ArtistInfoDetail(route.artistId))
+                    )
+                }
+                ArtistInfoDetailScreen(
+                    triggerLoader = triggerLoader,
+                    showTopSnackbar = showTopSnackbar,
+                    artistId = route.artistId,
+                    onNavigateToAlbums = { artistId ->
+                        navController.navigate(AlbumsByArtist(artistId))
+                    }
+                )
+            }
+
+            // ALBUMS BY ARTIST
+            composable<AlbumsByArtist> { backStackEntry ->
+                val route = backStackEntry.toRoute<AlbumsByArtist>()
+                LaunchedEffect(Unit) {
+                    viewModel.onIntent(
+                        MainIntent.RouteChanged(AlbumsByArtist(route.artistId))
+                    )
+                }
+                AlbumsByArtistScreen(
+                    triggerLoader = triggerLoader,
+                    showTopSnackbar = showTopSnackbar,
+                    artistId = route.artistId
+                )
+            }
         }
     }
     DiscogsAlertDialog(
