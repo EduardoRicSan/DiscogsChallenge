@@ -2,6 +2,7 @@ package com.tech.design_system.components.topBar
 
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Help
@@ -63,7 +64,7 @@ fun DiscogsTopBar(
             if (showBackButton) {
                 IconButton(onClick = onBackClick) {
                     Icon(
-                        imageVector = Icons.Default.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Back",
                         tint = MaterialTheme.colorScheme.onSurface
                     )
@@ -110,7 +111,7 @@ fun DiscogsTopBarPreview() {
         onBackClick = { /* TODO */ },
         firstActionIcon = Icons.Default.Notifications,
         onFirstActionClick = { /* TODO */ },
-        secondActionIcon = Icons.Default.Help,
+        secondActionIcon = Icons.AutoMirrored.Filled.Help,
         onSecondActionClick = { /* TODO */ }
     )
 }

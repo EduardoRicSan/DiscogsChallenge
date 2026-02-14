@@ -17,6 +17,14 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
     buildTypes {
+        debug {
+            buildConfigField(
+                "String",
+                "DISCOGS_BASE_URL",
+                "\"https://api.discogs.com\"",
+            )
+            buildConfigField("String", "DISCOGS_API_KEY", "\"${project.findProperty("DISCOGS_API_KEY") ?: ""}\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -24,6 +32,9 @@ android {
                 "proguard-rules.pro",
             )
         }
+    }
+    buildFeatures {
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
