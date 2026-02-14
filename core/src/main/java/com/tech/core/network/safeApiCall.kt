@@ -8,6 +8,10 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 
+/**
+ * Executes a suspend API call safely and emits Loading, Success, or Error states
+ * wrapped in [NetworkResult] using a Flow.
+ */
 suspend fun <T> safeApiCall(
     call: suspend () -> T
 ): Flow<NetworkResult<T>> = flow {
