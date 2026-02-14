@@ -5,5 +5,5 @@ data class SearchArtistResult(
     val title: String?,
     val type: String?,
     val thumb: String?,
-    val coverImage: String?,
+    val resourceUrl: String?,
 )

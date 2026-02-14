@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">DiscogsChallenge</string>
+    <string name="title_search_artist"> Search Artist</string>
+    <string name="title_artist_info"> Artist Info</string>
+    <string name="title_albums_by_artist"> Albums By Artist </string>
+    <string name="title_alert_dialog_exit">Salir</string>
+    <string name="message_alert_dialog_exit">¿Deseas salir de la aplicación?</string>
+    <string name="confirm_alert_dialog_exit">Sí</string>
+    <string name="dismiss_alert_dialog_exit">Cancelar</string>
 </resources>

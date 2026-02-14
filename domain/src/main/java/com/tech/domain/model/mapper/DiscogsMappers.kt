@@ -9,15 +9,28 @@ import com.tech.domain.model.getAlbumsByArtist.Album
 import com.tech.domain.model.getArtistInfo.Artist
 import com.tech.domain.model.getArtistInfo.Image
 import com.tech.domain.model.getArtistInfo.Member
+import com.tech.domain.model.mapper.ImageServerDummyUrl.SERVER_OK_BASE_URL
+import com.tech.domain.model.mapper.ImageServerDummyUrl.SERVER_OK_BASE_URL_IMAGE_SIZE
 import com.tech.domain.model.search.SearchArtistResult
+
+// ImageServerDummyUrl constants are using cause thumbnail of Search always
+// is coming with empty value. If possible I will fix as a tech debt
+
+object ImageServerDummyUrl {
+    const val SERVER_OK_BASE_URL = "https://picsum.photos/seed/"
+    const val SERVER_OK_BASE_URL_IMAGE_SIZE = "600/400"
+}
+fun randomPhotoUrl(id: Int): String {
+    return "$SERVER_OK_BASE_URL$id/$SERVER_OK_BASE_URL_IMAGE_SIZE"
+}
 
 fun ResultsDTO.toDomain(): SearchArtistResult =
     SearchArtistResult(
         id = id ?: 0,
         title = title,
         type = type,
-        thumb = thumb,
-        coverImage = coverImage,
+        thumb = randomPhotoUrl(id ?: 0),
+        resourceUrl = resourceUrl,
     )
 
 fun ImagesDTO.toDomain(): Image =
