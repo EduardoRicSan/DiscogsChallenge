@@ -1,5 +1,6 @@
 package com.tech.domain.model.mapper
 
+import com.tech.core.common.globalConstants.randomPhotoUrl
 import com.tech.data.remote.dto.getAlbumsByArtist.ReleasesDTO
 import com.tech.data.remote.dto.getArtistInfo.GetArtistInfoResponseDTO
 import com.tech.data.remote.dto.getArtistInfo.ImagesDTO
@@ -7,17 +8,20 @@ import com.tech.data.remote.dto.getArtistInfo.MembersDTO
 import com.tech.data.remote.dto.search.ResultsDTO
 import com.tech.domain.model.getAlbumsByArtist.Album
 import com.tech.domain.model.getArtistInfo.Artist
+import com.tech.domain.model.getArtistInfo.ArtistFull
 import com.tech.domain.model.getArtistInfo.Image
 import com.tech.domain.model.getArtistInfo.Member
 import com.tech.domain.model.search.SearchArtistResult
 
+// ImageServerDummy constants are using cause thumbnail of Search always
+// is coming with empty value. If possible I will fix as a tech debt
 fun ResultsDTO.toDomain(): SearchArtistResult =
     SearchArtistResult(
         id = id ?: 0,
         title = title,
         type = type,
-        thumb = thumb,
-        coverImage = coverImage,
+        thumb = randomPhotoUrl(id ?: 0),
+        resourceUrl = resourceUrl,
     )
 
 fun ImagesDTO.toDomain(): Image =
@@ -63,3 +67,13 @@ fun ReleasesDTO.toDomain(): Album =
         label = label,
         artist = artist,
     )
+
+fun Artist.toFullDomain(): ArtistFull = ArtistFull(
+    id = id,
+    name = name,
+    title = profile,
+    thumb = images.firstOrNull()?.uri ?: images.firstOrNull()?.resourceUrl,
+    images = images,
+    members = members,
+    resourceUrl = resourceUrl
+)

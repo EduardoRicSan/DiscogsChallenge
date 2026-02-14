@@ -30,7 +30,13 @@ data class DiscogsSizes(
     // Icon sizes
     val iconSmall: Dp = 16.dp,
     val iconMedium: Dp = 24.dp,
-    val iconLarge: Dp = 32.dp
+    val iconLarge: Dp = 32.dp,
+
+    //Image Size
+    val imageSmall: Dp = 100.dp,
+    val imageMedium: Dp = 200.dp,
+    val imageLarge: Dp = 300.dp,
+
 )
 
 val LocalSize = staticCompositionLocalOf { DiscogsSizes() }

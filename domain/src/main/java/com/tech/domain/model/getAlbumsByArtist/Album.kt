@@ -1,6 +1,8 @@
 package com.tech.domain.model.getAlbumsByArtist
 
-// Album.kt
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class Album(
     val id: Int,
     val title: String?,

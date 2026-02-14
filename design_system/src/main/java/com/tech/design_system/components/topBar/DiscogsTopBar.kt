@@ -1,5 +1,10 @@
 package com.tech.design_system.components.topBar
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -19,36 +24,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.tech.core.route.DiscogsAppDestination
+import com.tech.core.route.SearchArtist
 
 
 /**
- * DiscogsTopBar
+ * BXMasTopBar
+ * Top bar with optional back button, title, and two optional action icons.
  *
- * A customizable TopAppBar following the Discogs design system.
- * Supports optional back button, title, and up to two action icons.
- *
- * @param titleText Text to display as the title
- * @param showBackButton Whether to display the back button
+ * @param titleText Text to display as the title (can use custom text composable)
+ * @param showBackButton Whether to show the back button
  * @param onBackClick Lambda invoked when back button is clicked
- * @param firstActionIcon Optional first action icon
- * @param showFirstActionIcon Whether to display the first action icon
- * @param onFirstActionClick Lambda invoked when first action icon is clicked
- * @param secondActionIcon Optional second action icon
- * @param showSecondActionIcon Whether to display the second action icon
- * @param onSecondActionClick Lambda invoked when second action icon is clicked
+ * @param firstActionIcon Optional first action icon (e.g., notifications)
+ * @param showFirstActionIcon Whether to display first action icon
+ * @param onFirstActionClick Lambda invoked when first action is clicked
+ * @param secondActionIcon Optional second action icon (e.g., support)
+ * @param showSecondActionIcon Whether to display second action icon
+ * @param onSecondActionClick Lambda invoked when second action is clicked
  */
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun DiscogsTopBar(
     titleText: String,
-    showBackButton: Boolean = false,
+    currentRoute: DiscogsAppDestination,
     onBackClick: () -> Unit = {},
-    firstActionIcon: ImageVector? = null,
-    showFirstActionIcon: Boolean = true,
-    onFirstActionClick: () -> Unit = {},
-    secondActionIcon: ImageVector? = null,
-    showSecondActionIcon: Boolean = true,
-    onSecondActionClick: () -> Unit = {},
+    onBackLongPress: () -> Unit = {},
 ) {
     TopAppBar(
         title = {
@@ -61,39 +62,29 @@ fun DiscogsTopBar(
             )
         },
         navigationIcon = {
-            if (showBackButton) {
-                IconButton(onClick = onBackClick) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Back",
-                        tint = MaterialTheme.colorScheme.onSurface
+            Box(
+                modifier = Modifier
+                    .padding(12.dp)
+                    .then(
+                        if (currentRoute is SearchArtist) {
+                            Modifier.combinedClickable(
+                                onClick = {},
+                                onLongClick = onBackLongPress
+                            )
+                        } else {
+                            Modifier.clickable { onBackClick() }
+                        }
                     )
-                }
-            }
-        },
-        actions = {
-            if (firstActionIcon != null && showFirstActionIcon) {
-                IconButton(onClick = onFirstActionClick) {
-                    Icon(
-                        imageVector = firstActionIcon,
-                        contentDescription = "First action",
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
-            if (secondActionIcon != null && showSecondActionIcon) {
-                IconButton(onClick = onSecondActionClick) {
-                    Icon(
-                        imageVector = secondActionIcon,
-                        contentDescription = "Second action",
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                }
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back",
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.surface,
-            scrolledContainerColor = MaterialTheme.colorScheme.surface
         ),
         modifier = Modifier.statusBarsPadding()
     )
@@ -107,12 +98,9 @@ fun DiscogsTopBar(
 fun DiscogsTopBarPreview() {
     DiscogsTopBar(
         titleText = "Discogs App",
-        showBackButton = true,
         onBackClick = { /* TODO */ },
-        firstActionIcon = Icons.Default.Notifications,
-        onFirstActionClick = { /* TODO */ },
-        secondActionIcon = Icons.AutoMirrored.Filled.Help,
-        onSecondActionClick = { /* TODO */ }
+        currentRoute = SearchArtist,
+        onBackLongPress = { /* TODO */ }
     )
 }
 

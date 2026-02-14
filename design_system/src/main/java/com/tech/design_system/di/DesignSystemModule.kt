@@ -23,16 +23,21 @@ object DesignSystemModule {
     @Singleton
     fun provideOkHttpClient(): OkHttpClient {
         val logging = HttpLoggingInterceptor { message ->
-            Log.d("OkHttp", message) // Logs de cada request/response
+            Log.d("CoilHttpDebug", message) // Logs de cada request/response
         }.apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
         val debugInterceptor = Interceptor { chain ->
             val request = chain.request()
+            Log.d("CoilHttpDebug", "Request URL: ${request.url}")
+            Log.d("CoilHttpDebug", "Request headers: ${request.headers}")
+
             val response = chain.proceed(request)
+
+            Log.d("CoilHttpDebug", "Response code: ${response.code}")
+            Log.d("CoilHttpDebug", "Response message: ${response.message}")
             response
         }
-
         return OkHttpClient.Builder()
             .addInterceptor(logging)
             .addInterceptor(debugInterceptor)

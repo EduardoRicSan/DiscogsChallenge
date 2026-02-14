@@ -28,3 +28,13 @@ data class Member(
     val resourceUrl: String?,
     val active: Boolean?
 )
+
+data class ArtistFull(
+    val id: Int,
+    val name: String,
+    val title: String?,
+    val thumb: String?,
+    val images: List<Image>,
+    val members: List<Member>,
+    val resourceUrl: String?
+)

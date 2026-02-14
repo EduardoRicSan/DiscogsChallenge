@@ -46,16 +46,15 @@ import com.tech.design_system.theme.DiscogsChallengeTheme
 @Composable
 fun DiscogsAlertDialog(
     dialogMessage: DiscogsDialogMessage,
-    isVisible: Boolean,
-    onDismiss: () -> Unit,
+    isVisible: MutableState<Boolean>,
     modifier: Modifier = Modifier
 ) {
-    if (!isVisible) return
+    if (!isVisible.value) return
 
     AlertDialog(
         modifier = modifier,
         onDismissRequest = {
-            onDismiss()
+            isVisible.value = false
             dialogMessage.onDismiss?.invoke()
         },
         title = {
@@ -73,7 +72,7 @@ fun DiscogsAlertDialog(
         confirmButton = {
             TextButton(
                 onClick = {
-                    onDismiss()
+                    isVisible.value = false
                     dialogMessage.onConfirm()
                 }
             ) {
@@ -84,7 +83,7 @@ fun DiscogsAlertDialog(
             {
                 TextButton(
                     onClick = {
-                        onDismiss()
+                        isVisible.value = false
                         dialogMessage.onDismiss?.invoke()
                     }
                 ) {
@@ -93,32 +92,4 @@ fun DiscogsAlertDialog(
             }
         }
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun DiscogsAlertDialogPreview() {
-    DiscogsChallengeTheme {
-        // State for showing the dialog
-        var showDialog by remember { mutableStateOf(true) }
-
-        // A button to toggle the dialog visibility
-        Button(onClick = { showDialog = true }) {
-            Text("Show Dialog")
-        }
-
-        // The dialog itself
-        DiscogsAlertDialog(
-            dialogMessage = DiscogsDialogMessage(
-                title = "Delete Item",
-                message = "Are you sure you want to delete this item?",
-                confirmLabel = "Delete",
-                onConfirm = { /* confirm logic */ },
-                dismissLabel = "Cancel",
-                onDismiss = { /* dismiss logic */ }
-            ),
-            isVisible = showDialog,
-            onDismiss = { showDialog = false }
-        )
-    }
 }

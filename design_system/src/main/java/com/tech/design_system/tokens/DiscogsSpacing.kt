@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 
 @Immutable
 data class DiscogsSpacing(
+    val none: Dp = 0.dp,
     val xs: Dp = 4.dp,
     val sm: Dp = 8.dp,
     val md: Dp = 12.dp,
