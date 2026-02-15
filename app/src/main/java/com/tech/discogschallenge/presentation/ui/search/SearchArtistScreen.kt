@@ -16,12 +16,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.tech.design_system.common.model.DiscogsSnackbarMessage
 import com.tech.design_system.common.model.DiscogsSnackbarType
 import com.tech.design_system.components.loader.DiscogsLoadingIndicator
 import com.tech.design_system.components.searchBar.DiscogsSimpleSearchBar
 import com.tech.design_system.tokens.spacing
+import com.tech.discogschallenge.R
 import com.tech.discogschallenge.presentation.viewmodel.search.SearchArtistIntent
 import com.tech.discogschallenge.presentation.viewmodel.search.SearchArtistSideEffect
 import com.tech.discogschallenge.presentation.viewmodel.search.SearchArtistState
@@ -77,7 +79,9 @@ fun SearchArtistScreen(
 
                 // Empty results state
                 state.artists.isEmpty() -> {
-                    EmptyPlaceholder()
+                    EmptyPlaceholder(
+                        stringResource(R.string.title_no_artist_found)
+                    )
                 }
 
                 // Results list

@@ -30,6 +30,7 @@ import com.tech.design_system.common.constants.DSConstants.MAX_LINE_AT_2
 import com.tech.discogschallenge.R
 import com.tech.design_system.common.model.DiscogsImageSource
 import com.tech.design_system.components.button.DiscogsPrimaryButton
+import com.tech.design_system.components.button.DiscogsSecondaryButton
 import com.tech.design_system.components.card.DiscogsCard
 import com.tech.design_system.components.icon.DiscogsIconVector
 import com.tech.design_system.components.image.DiscogsImage
@@ -48,18 +49,24 @@ import com.tech.domain.model.getArtistInfo.ArtistFull
 @Composable
 fun ArtistDetailContent(
     artist: ArtistFull,
-    onViewAlbumsClick: () -> Unit
+    onViewAlbumsClick: () -> Unit,
+    onViewAppInfoClick: () -> Unit
 ) {
+
     LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {
 
-        // ---------- HEADER IMAGE ----------
+        // --------------------------------------------------
+        // HERO HEADER
+        // --------------------------------------------------
         item {
+
             Box {
 
-                // Artist hero image
-                val imageUrl = artist.images.firstOrNull()?.resourceUrl ?: artist.thumb
+                val imageUrl =
+                    artist.images.firstOrNull()?.resourceUrl ?: artist.thumb
+
                 DiscogsImage(
                     source = DiscogsImageSource.Url(imageUrl.orEmpty()),
                     contentDescription = artist.name,
@@ -69,19 +76,20 @@ fun ArtistDetailContent(
                     contentScale = ContentScale.Crop
                 )
 
-                // Gradient overlay to improve title readability
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(MaterialTheme.sizes.imageLarge)
                         .background(
                             Brush.verticalGradient(
-                                listOf(Color.Black.copy(alpha = 0.5f), Color.Transparent)
+                                listOf(
+                                    Color.Black.copy(alpha = 0.5f),
+                                    Color.Transparent
+                                )
                             )
                         )
                 )
 
-                // Artist name displayed over image
                 DiscogsHeadlineText(
                     text = artist.name,
                     color = Color.White,
@@ -92,37 +100,34 @@ fun ArtistDetailContent(
             }
         }
 
-        // ---------- ARTIST INFO + ACTION ----------
-        item {
-            Column(modifier = Modifier.padding(MaterialTheme.spacing.lg)) {
+        // --------------------------------------------------
+        // BIOGRAPHY
+        // --------------------------------------------------
+        artist.profile?.takeIf { it.isNotBlank() }?.let { profile ->
 
-                // Artist description / profile
-                artist.title?.let {
-                    DiscogsLabelText(
-                        text = it,
-                        overflow = TextOverflow.Visible,
-                        maxLines = 6
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
-
-                // Navigation button to albums screen
-                DiscogsPrimaryButton(
-                    text = stringResource(R.string.title_action_view_albums),
-                    onClick = onViewAlbumsClick,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(MaterialTheme.sizes.avatarMedium)
+            item {
+                ArtistProfileSection(
+                    profile = profile,
+                    modifier = Modifier.padding(MaterialTheme.spacing.lg)
                 )
-
-                Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
             }
         }
 
+        // --------------------------------------------------
+        // QUICK INFO
+        // --------------------------------------------------
+        item {
+            ArtistQuickInfoSection(
+                artist = artist,
+                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.lg)
+            )
+        }
+
+        // --------------------------------------------------
+        // MEMBERS
+        // --------------------------------------------------
         if (artist.members.isNotEmpty()) {
 
-            // Section title
             item {
                 DiscogsOverlineText(
                     text = stringResource(R.string.title_band_members),
@@ -134,20 +139,20 @@ fun ArtistDetailContent(
                 )
             }
 
-            // Horizontal members list
             item {
                 LazyRow(
                     contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.lg),
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
                 ) {
+
                     items(artist.members) { member ->
+
                         DiscogsCard(
                             modifier = Modifier
                                 .width(MaterialTheme.sizes.imageMedium)
                                 .height(MaterialTheme.sizes.imageMedium)
                         ) {
 
-                            // Member item content
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Center,
@@ -155,21 +160,61 @@ fun ArtistDetailContent(
                                     .fillMaxSize()
                                     .padding(MaterialTheme.spacing.sm)
                             ) {
+
                                 DiscogsIconVector(
                                     Icons.Default.Person,
                                     contentDescription = null
                                 )
 
-                                Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
+                                Spacer(Modifier.width(MaterialTheme.spacing.sm))
 
                                 DiscogsBodyText(
                                     text = member.name.orEmpty(),
-                                    maxLines = MAX_LINE_AT_2,
+                                    maxLines = MAX_LINE_AT_2
                                 )
                             }
                         }
                     }
                 }
+            }
+        }
+
+        // --------------------------------------------------
+        // EXTERNAL LINKS
+        // --------------------------------------------------
+        if (artist.urls.isNotEmpty()) {
+
+            item {
+                ArtistLinksSection(
+                    urls = artist.urls,
+                    modifier = Modifier.padding(MaterialTheme.spacing.lg)
+                )
+            }
+        }
+
+        // --------------------------------------------------
+        // ACTIONS
+        // --------------------------------------------------
+        item {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(MaterialTheme.spacing.lg),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
+            ) {
+
+                DiscogsPrimaryButton(
+                    text = stringResource(R.string.title_action_view_albums),
+                    onClick = onViewAlbumsClick,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                DiscogsSecondaryButton(
+                    text = stringResource(R.string.title_about_app),
+                    onClick = onViewAppInfoClick,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
     }

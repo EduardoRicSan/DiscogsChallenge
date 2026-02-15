@@ -26,6 +26,7 @@ fun ArtistInfoDetailScreen(
     triggerLoader: (Boolean) -> Unit,
     showTopSnackbar: (DiscogsSnackbarMessage) -> Unit,
     onNavigateToAlbums: (Int) -> Unit,
+    onNavigateToAppInfo: () -> Unit,
     artistId: Int,
 ) {
     val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
@@ -47,6 +48,9 @@ fun ArtistInfoDetailScreen(
                 artist = artist,
                 onViewAlbumsClick = {
                     viewModel.onIntent(ArtistDetailIntent.ViewAlbums)
+                },
+                onViewAppInfoClick = {
+                    viewModel.onIntent(ArtistDetailIntent.ViewAppInfo)
                 }
             )
         }
@@ -75,6 +79,10 @@ fun ArtistInfoDetailScreen(
                 // Fallback error feedback
                 is ArtistDetailSideEffect.ShowError -> {
                     Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+                }
+
+                is ArtistDetailSideEffect.NavigateToAppInfo -> {
+                    onNavigateToAppInfo()
                 }
             }
         }

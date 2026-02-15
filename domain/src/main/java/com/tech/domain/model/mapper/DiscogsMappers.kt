@@ -75,5 +75,9 @@ fun Artist.toFullDomain(): ArtistFull = ArtistFull(
     thumb = images.firstOrNull()?.uri ?: images.firstOrNull()?.resourceUrl,
     images = images,
     members = members,
-    resourceUrl = resourceUrl
+    resourceUrl = resourceUrl,
+    profile = profile,
+    urls = urls,
+    nameVariations = nameVariations,
+    dataQuality = dataQuality,
 )

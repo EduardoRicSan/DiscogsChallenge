@@ -17,47 +17,88 @@ import org.orbitmvi.orbit.viewmodel.container
 class ArtistInfoDetailViewModel @Inject constructor(
     private val getArtistInfoUseCase: GetArtistInfoUseCase
 ) : ContainerHost<ArtistDetailState, ArtistDetailSideEffect>, ViewModel() {
+
     override val container =
         container<ArtistDetailState, ArtistDetailSideEffect>(ArtistDetailState())
+
     fun onIntent(intent: ArtistDetailIntent) = intent {
         when (intent) {
-            is ArtistDetailIntent.LoadArtist -> loadArtist(intent.artistId)
-            ArtistDetailIntent.Retry -> loadCurrentArtist()
+
+            is ArtistDetailIntent.LoadArtist -> {
+                loadArtist(intent.artistId)
+            }
+
+            ArtistDetailIntent.Retry -> {
+                loadCurrentArtist()
+            }
+
             ArtistDetailIntent.ViewAlbums -> {
-                state.artist?.let { artist ->
-                    postSideEffect(ArtistDetailSideEffect.NavigateToAlbums(artist.id))
+                state.artist?.let {
+                    postSideEffect(
+                        ArtistDetailSideEffect.NavigateToAlbums(it.id)
+                    )
                 }
+            }
+
+            ArtistDetailIntent.ViewAppInfo -> {
+                postSideEffect(ArtistDetailSideEffect.NavigateToAppInfo)
             }
         }
     }
+
     private fun loadArtist(artistId: Int) = intent {
-        reduce { state.copy(isLoading = true, errorMessage = null) }
+
+        reduce {
+            state.copy(
+                isLoading = true,
+                errorMessage = null
+            )
+        }
+
         getArtistInfoUseCase(artistId)
             .catch { e ->
                 reduce { state.copy(isLoading = false) }
-                postSideEffect(ArtistDetailSideEffect.ShowError(e.message ?: UNKNOWN_ERROR_MESSAGE))
+
+                postSideEffect(
+                    ArtistDetailSideEffect.ShowError(
+                        e.message ?: UNKNOWN_ERROR_MESSAGE
+                    )
+                )
             }
             .collect { result ->
+
                 when (result) {
-                    is NetworkResult.Success -> reduce {
-                        state.copy(isLoading = false, artist = result.data.toFullDomain())
+
+                    is NetworkResult.Success -> {
+                        reduce {
+                            state.copy(
+                                isLoading = false,
+                                artist = result.data.toFullDomain()
+                            )
+                        }
                     }
+
                     is NetworkResult.Error -> {
                         reduce { state.copy(isLoading = false) }
+
                         postSideEffect(
                             ArtistDetailSideEffect.ShowError(result.message)
                         )
                     }
-                    is NetworkResult.Loading -> reduce { state.copy(isLoading = true) }
+
+                    is NetworkResult.Loading -> {
+                        reduce { state.copy(isLoading = true) }
+                    }
                 }
             }
     }
+
     private fun loadCurrentArtist() {
-        val artistId: Int? = container.stateFlow.value.artist?.id
-        if (artistId != null) {
-            viewModelScope.launch(Dispatchers.IO) {
-                onIntent(ArtistDetailIntent.LoadArtist(artistId))
-            }
+        val artistId = container.stateFlow.value.artist?.id ?: return
+
+        viewModelScope.launch(Dispatchers.IO) {
+            onIntent(ArtistDetailIntent.LoadArtist(artistId))
         }
     }
 }
+

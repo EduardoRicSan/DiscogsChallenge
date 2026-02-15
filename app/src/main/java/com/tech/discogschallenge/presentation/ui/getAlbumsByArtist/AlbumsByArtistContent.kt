@@ -10,7 +10,10 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.tech.design_system.tokens.spacing
+import com.tech.discogschallenge.R
+import com.tech.discogschallenge.presentation.ui.search.EmptyPlaceholder
 import com.tech.discogschallenge.presentation.viewmodel.getAlbumsByArtist.AlbumsByArtistIntent
 import com.tech.discogschallenge.presentation.viewmodel.getAlbumsByArtist.AlbumsByArtistState
 import com.tech.domain.model.getAlbumsByArtist.Album
@@ -48,12 +51,23 @@ fun AlbumsByArtistContent(
             )
         }
 
+        // Empty state
+        if (albums.isEmpty()) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                EmptyPlaceholder(
+                    stringResource(R.string.title_no_albums_found)
+                )
+            }
+        }
         // Album grid items
-        items(
-            items = albums,
-            key = { it.id }
-        ) { album ->
-            AlbumGridItem(album)
+        else {
+            items(
+                items = albums,
+                key = { it.id }
+            ) { album ->
+                AlbumGridItem(album)
+            }
         }
     }
 }
+

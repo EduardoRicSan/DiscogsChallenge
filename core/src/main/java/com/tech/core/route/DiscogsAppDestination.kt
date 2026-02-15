@@ -21,4 +21,6 @@ data class ArtistInfoDetail(
 data class AlbumsByArtist(
     val artistId: Int
 ) : DiscogsAppDestination
+@Serializable
+data object AbooutApp : DiscogsAppDestination
 

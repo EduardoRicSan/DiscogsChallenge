@@ -12,4 +12,33 @@
     <string name="title_filter_by_label">Filter by Label</string>
     <string name="title_filter_by_year">Filter by Year</string>
     <string name="title_no_artist_found">No artists found</string>
+    <string name="title_external_links">External links</string>
+    <string name="title_bio">Biography</string>
+    <string name="action_show_less">Show less</string>
+    <string name="action_read_more">Read more</string>
+    <string name="title_data_quality">Data quality:</string>
+    <string name="title_also_known_as">Also known as:</string>
+    <string name="title_about_app">About this app</string>
+    <string name="title_no_albums_found">No Albums found</string>
+    <string name="title_dev_name">Eduardo Rico</string>
+    <string name="title_dev_bio">"30 años | Android Software Engineer"</string>
+    <string name="title_dev_experience">Experiencia Profesional</string>
+    <string name="title_dev_skills">
+        • Construcción y mantenimiento de apps Android siguiendo Clean Architecture y MVVM
+                    • Integración de APIs RESTful usando Ktor y Retrofit
+                    • Desarrollo de UI con Jetpack Compose y navegación modular
+                    • Test unitarios y de UI con JUnit, Mockito y Espresso
+                    • Optimización de rendimiento y refactorización de código legado
+    </string>
+    <string name="title_dev_clara_fit">Por qué soy buen fit para Clara</string>
+    <string name="title_dev_experience_desc">
+        • Experiencia profesional alineada con la innovación y calidad que Clara busca
+                    • Habilidad para colaborar en equipos multifuncionales y metodologías Agile
+                    • Apasionado por el desarrollo Android y aprendizaje continuo
+    </string>
+    <string name="title_more_info">Otros datos divertidos</string>
+    <string name="title_hobbies">
+        • Fan del Cruz Azul ⚽
+        • Siempre con energía positiva y dispuesto a nuevos retos
+    </string>
 </resources>

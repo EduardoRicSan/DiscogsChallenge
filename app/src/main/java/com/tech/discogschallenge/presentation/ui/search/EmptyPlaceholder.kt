@@ -13,11 +13,11 @@ import com.tech.discogschallenge.R
  * Placeholder shown when no artists are found.
  */
 @Composable
-fun EmptyPlaceholder() {
+fun EmptyPlaceholder(message: String) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        DiscogsTextPlaceholder(text = stringResource(R.string.title_no_artist_found))
+        DiscogsTextPlaceholder(text = message)
     }
 }

@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.tech.discogschallenge.R
 import com.tech.core.common.extension.killApp
+import com.tech.core.route.AbooutApp
 import com.tech.core.route.AlbumsByArtist
 import com.tech.core.route.ArtistInfoDetail
 import com.tech.core.route.SearchArtist
@@ -26,6 +27,7 @@ import com.tech.design_system.common.model.asString
 import com.tech.design_system.components.dialog.DiscogsAlertDialog
 import com.tech.design_system.components.scafold.DiscogsAppScaffold
 import com.tech.design_system.components.topBar.DiscogsTopBar
+import com.tech.discogschallenge.presentation.ui.aboutApp.AboutAppScreen
 import com.tech.discogschallenge.presentation.ui.getAlbumsByArtist.AlbumsByArtistScreen
 import com.tech.discogschallenge.presentation.ui.getArtistInfo.ArtistInfoDetailScreen
 import com.tech.discogschallenge.presentation.ui.search.SearchArtistScreen
@@ -133,6 +135,9 @@ fun DiscogsNavHost(
                     artistId = route.artistId,
                     onNavigateToAlbums = { artistId ->
                         navController.navigate(AlbumsByArtist(artistId))
+                    },
+                    onNavigateToAppInfo = {
+                        navController.navigate(AbooutApp)
                     }
                 )
             }
@@ -154,6 +159,10 @@ fun DiscogsNavHost(
                     showTopSnackbar = showTopSnackbar,
                     artistId = route.artistId
                 )
+            }
+
+            composable<AbooutApp> {
+                AboutAppScreen()
             }
         }
     }

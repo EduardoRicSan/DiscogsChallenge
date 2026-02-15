@@ -17,14 +17,18 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tech.design_system.theme.DiscogsChallengeTheme
@@ -66,15 +70,44 @@ fun DiscogsSimpleSearchBar(
     cursorColor: Color = MaterialTheme.colorScheme.primary,
     errorColor: Color = Color.Red
 ) {
+
+    // 👇 Estado REAL del TextField (incluye cursor)
+    var textFieldValue by rememberSaveable(
+        stateSaver = TextFieldValue.Saver
+    ) {
+        mutableStateOf(TextFieldValue(query))
+    }
+
+    /**
+     * Sync cuando el query viene del ViewModel
+     * (ej: clear, restore state, navigation back)
+     */
+    LaunchedEffect(query) {
+        if (query != textFieldValue.text) {
+            textFieldValue = textFieldValue.copy(
+                text = query,
+                selection = TextRange(query.length)
+            )
+        }
+    }
+
     OutlinedTextField(
-        value = query,
-        onValueChange = onQueryChange,
+        value = textFieldValue,
+        onValueChange = { newValue ->
+            textFieldValue = newValue
+            onQueryChange(newValue.text)
+        },
         placeholder = { Text(placeholder) },
         singleLine = true,
-        leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
+        leadingIcon = {
+            Icon(Icons.Default.Search, contentDescription = "Search")
+        },
         trailingIcon = {
-            if (query.isNotEmpty()) {
-                IconButton(onClick = { onQueryChange("") }) {
+            if (textFieldValue.text.isNotEmpty()) {
+                IconButton(onClick = {
+                    textFieldValue = TextFieldValue("")
+                    onQueryChange("")
+                }) {
                     Icon(Icons.Default.Clear, contentDescription = "Clear Search")
                 }
             }
@@ -85,7 +118,7 @@ fun DiscogsSimpleSearchBar(
             keyboardType = KeyboardType.Text
         ),
         keyboardActions = KeyboardActions(
-            onSearch = { onSearch?.invoke(query) }
+            onSearch = { onSearch?.invoke(textFieldValue.text) }
         ),
         modifier = modifier
             .fillMaxWidth()
@@ -104,38 +137,11 @@ fun DiscogsSimpleSearchBar(
             focusedIndicatorColor = cursorColor,
             unfocusedIndicatorColor = textColor.copy(alpha = 0.3f),
             disabledIndicatorColor = textColor.copy(alpha = 0.3f),
-            errorIndicatorColor = errorColor,
-            focusedLeadingIconColor = cursorColor,
-            unfocusedLeadingIconColor = textColor,
-            disabledLeadingIconColor = textColor.copy(alpha = 0.3f),
-            errorLeadingIconColor = errorColor,
-            focusedTrailingIconColor = cursorColor,
-            unfocusedTrailingIconColor = textColor,
-            disabledTrailingIconColor = textColor.copy(alpha = 0.3f),
-            errorTrailingIconColor = errorColor,
-            focusedPlaceholderColor = textColor.copy(alpha = 0.5f),
-            unfocusedPlaceholderColor = textColor.copy(alpha = 0.5f),
-            disabledPlaceholderColor = textColor.copy(alpha = 0.3f),
-            errorPlaceholderColor = errorColor,
-            focusedLabelColor = textColor,
-            unfocusedLabelColor = textColor.copy(alpha = 0.7f),
-            disabledLabelColor = textColor.copy(alpha = 0.3f),
-            errorLabelColor = errorColor,
-            focusedSupportingTextColor = textColor,
-            unfocusedSupportingTextColor = textColor.copy(alpha = 0.7f),
-            disabledSupportingTextColor = textColor.copy(alpha = 0.3f),
-            errorSupportingTextColor = errorColor,
-            focusedPrefixColor = textColor,
-            unfocusedPrefixColor = textColor.copy(alpha = 0.7f),
-            disabledPrefixColor = textColor.copy(alpha = 0.3f),
-            errorPrefixColor = errorColor,
-            focusedSuffixColor = textColor,
-            unfocusedSuffixColor = textColor.copy(alpha = 0.7f),
-            disabledSuffixColor = textColor.copy(alpha = 0.3f),
-            errorSuffixColor = errorColor
+            errorIndicatorColor = errorColor
         )
     )
 }
+
 
 @Preview(showBackground = true)
 @Composable

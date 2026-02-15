@@ -36,5 +36,10 @@ data class ArtistFull(
     val thumb: String?,
     val images: List<Image>,
     val members: List<Member>,
-    val resourceUrl: String?
+    val resourceUrl: String?,
+    val profile: String?,
+    val urls: List<String>,
+    val nameVariations: List<String>,
+    val dataQuality: String?
 )
+

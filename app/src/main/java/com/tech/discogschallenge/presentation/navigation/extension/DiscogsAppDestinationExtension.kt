@@ -2,6 +2,7 @@ package com.tech.discogschallenge.presentation.navigation.extension
 
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.toRoute
+import com.tech.core.route.AbooutApp
 import com.tech.core.route.AlbumsByArtist
 import com.tech.core.route.ArtistInfoDetail
 import com.tech.core.route.DiscogsAppDestination
@@ -15,6 +16,7 @@ fun DiscogsAppDestination.toTopBarTitle(): DiscogsUiText =
         is SearchArtist ->  DiscogsUiText.StringRes(R.string.title_search_artist)
         is ArtistInfoDetail -> DiscogsUiText.StringRes(R.string.title_artist_info)
         is AlbumsByArtist -> DiscogsUiText.StringRes(R.string.title_albums_by_artist)
+        is AbooutApp -> DiscogsUiText.StringRes(R.string.title_about_app)
     }
 
 
