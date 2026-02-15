@@ -10,7 +10,7 @@ This is an Android application that demonstrates modern Android development best
 
 ## 📸 Screenshots / Recording
 
-![Demo de la App](/assets/demo.gif)
+https://github.com/EduardoRicSan/DiscogsChallenge/blob/main/assets/Demo.gif
 
 
 ## 🚀 Tech Stack
