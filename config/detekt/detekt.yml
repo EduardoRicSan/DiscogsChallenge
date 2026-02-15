@@ -1,0 +1,89 @@
+build:
+  maxIssues: 0  # Fail the build if any new issue is introduced
+
+naming:
+  FunctionNaming:
+    active: true
+    # Allow PascalCase for Composables while keeping Kotlin conventions
+    functionPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ignoreAnnotated:
+      - Composable
+
+  PackageNaming:
+    active: true
+    # Allows underscore in package names (e.g., design_system)
+    packagePattern: '[a-z]+(\.[a-z_][A-Za-z0-9_]*)*'
+
+complexity:
+  LongMethod:
+    active: true
+    threshold: 60  # Prevent overly large functions (especially in ViewModels & UseCases)
+    ignoreAnnotated:
+      - Composable
+
+  LongParameterList:
+    active: true
+    functionThreshold: 5  # Encourage wrapping parameters into data classes
+    constructorThreshold: 6
+    ignoreAnnotated:
+      - Composable
+
+  TooManyFunctions:
+    active: true
+    thresholdInClasses: 15   # Prevent "God classes"
+    thresholdInObjects: 15
+    thresholdInInterfaces: 10
+
+  CyclomaticComplexMethod:
+    active: true
+    threshold: 10  # Control branching complexity
+
+style:
+  MagicNumber:
+    active: true
+    # Allow numbers in property declarations (useful for Compose theme values)
+    ignorePropertyDeclaration: true
+    ignoreConstantDeclaration: true
+    ignoreCompanionObjectPropertyDeclaration: true
+    ignoreLocalVariableDeclaration: false
+    ignoreAnnotated:
+      - Preview
+      - Composable
+
+  WildcardImport:
+    active: false  # Avoid noise for Compose or Android projects
+
+  ReturnCount:
+    active: true
+    max: 2  # Prevent excessive early returns that reduce readability
+
+  ForbiddenComment:
+    active: true
+    comments:
+      - value: 'TODO:'
+        reason: 'Avoid leaving TODO comments in production code'
+      - value: 'FIXME:'
+        reason: 'Avoid leaving FIXME comments in production code'
+
+  UnusedPrivateMember:
+    active: true
+    ignoreAnnotated:
+      - Preview
+      - Composable  # Ignore previews and other private composables
+
+  UnusedParameter:
+    active: true
+    ignoreAnnotated:
+      - Preview
+      - Composable  # Ignore unused parameters in previews or composables
+
+exceptions:
+  TooGenericExceptionCaught:
+    active: true
+    exceptionNames:
+      - Exception
+      - Throwable  # Enforce catching specific exceptions
+
+performance:
+  SpreadOperator:
+    active: false  # Often acceptable in Kotlin, especially in tests
