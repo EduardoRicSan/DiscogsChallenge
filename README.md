@@ -44,16 +44,36 @@ The project is organized into multiple modules to promote separation of concerns
 *   `domain`: Contains the business logic of the application, including use cases and repository interfaces.
 *   `build_logic`: Contains custom Gradle plugins and build-related logic to manage dependencies and configurations in a centralized way.
 
-## ⚙️ Configuration
+## ⚙️ Prerequisites & Setup
 
-To build and run the project, you need to provide an API key for the Discogs API.
+### Prerequisites
+* Android Studio Bumblebee or higher
+* JDK 17
+* Kotlin 2.3.0
+* Android SDK 35+
+* Internet connection
 
-1.  Create a file named `local.properties` in the root of the project.
-2.  Add the following line to the `local.properties` file, replacing `YOUR_DISCOGS_API_KEY` with your actual key:
+### Steps to Run
 
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/EduardoRicSan/DiscogsChallenge.git
+    cd DiscogsChallenge
     ```
+2.  Open the project in Android Studio.
+3.  Sync Gradle to download the project dependencies.
+4.  Provide your Discogs API key:
+    Create a file named `local.properties` in the root directory of the project and add the following line, replacing `YOUR_DISCOGS_API_KEY` with your actual key:
+    ```properties
     DISCOGS_API_KEY="YOUR_DISCOGS_API_KEY"
     ```
+5.  Build and run the application:
+    *   Select your target device or emulator.
+    *   Click the **Run** button (or press `Shift` + `F10`).
+    *   Alternatively, you can build the app from the command line:
+        ```bash
+        ./gradlew assembleDebug
+        ```
 
 ## 🧠 Analysis and Development Process
 
@@ -76,14 +96,6 @@ This architecture was chosen for the following reasons:
 *   **Separation of Concerns:** Each layer has a specific responsibility, which makes the code easier to understand and maintain.
 *   **Testability:** Each layer can be tested independently, which makes it easier to write and run tests.
 *   **Scalability:** The architecture is scalable, which means that new features can be added easily without affecting the existing code.
-
-## 🛠️ How to Build
-
-To build the project, you can use Android Studio or the command line:
-
-```bash
-./gradlew assembleDebug
-```
 
 ## 🧪 Code Quality and Testing
 
