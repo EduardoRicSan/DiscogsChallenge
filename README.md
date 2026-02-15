@@ -10,6 +10,8 @@ This is an Android application that demonstrates modern Android development best
 
 ## 📸 Screenshots / Recording
 
+![Demo de la App](/assets/demo.gif)
+
 
 ## 🚀 Tech Stack
 
